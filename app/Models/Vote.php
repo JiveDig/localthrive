@@ -31,9 +31,4 @@ class Vote extends Model
     {
         return $this->belongsTo(Place::class);
     }
-
-    public function nomination()
-    {
-        return $this->belongsTo(Nomination::class, ['ranking_id', 'place_id'], ['ranking_id', 'place_id']);
-    }
 }

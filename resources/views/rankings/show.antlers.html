@@ -1,3 +1,24 @@
+{{ livewire:styles }}
+
+<!-- Debug output -->
+<div class="bg-gray-100 p-4 mb-4 font-mono text-sm overflow-auto">
+    <h3 class="font-bold mb-2">Debug Info:</h3>
+    <div class="mb-2">
+        <strong>Entry ID:</strong> {{ id }}<br>
+        <strong>Collection:</strong> {{ collection }}<br>
+        <strong>Title:</strong> {{ title }}
+    </div>
+    <div class="mb-2">
+        <strong>Computed Values:</strong><br>
+        nominations: {{ nominations | length ?? 'not set' }}<br>
+        total_votes: {{ total_votes ?? 'not set' }}
+    </div>
+    <div>
+        <strong>Raw Data:</strong><br>
+        {{ dump }}
+    </div>
+</div>
+
 <h1 class="text-3xl font-bold mb-6">{{ title }}</h1>
 
 {{ if content }}
@@ -9,20 +30,39 @@
 <div class="bg-white rounded-lg shadow p-6">
     <h2 class="text-xl font-semibold mb-4">Nominated Places</h2>
 
-    <div class="space-y-4">
-        {{ nominations }}
-            <div class="flex items-center justify-between border-b pb-4">
-                <div>
-                    <h3 class="font-medium">{{ place_data:title }}</h3>
-                    {{ if place_data:content }}
-                        <p class="text-gray-600 text-sm">{{ place_data:content }}</p>
-                    {{ /if }}
+    {{ if nominations }}
+        <div class="text-sm text-gray-500 mb-4">
+            Found {{ nominations | length }} nominations
+        </div>
+
+        <div class="space-y-4">
+            {{ nominations }}
+                <div class="flex items-center justify-between border-b pb-4">
+                    <div>
+                        <h3 class="font-medium">
+                            <a href="{{ place_data:url }}" class="hover:underline">
+                                {{ place_data:title ?? 'Untitled Place' }}
+                            </a>
+                        </h3>
+                        {{ if place_data:content }}
+                            <p class="text-gray-600 text-sm">{{ place_data:content }}</p>
+                        {{ /if }}
+                        <!-- Debug info -->
+                        <div class="text-xs text-gray-400">
+                            ID: {{ id }} | Ranking: {{ ranking_id }} | Votes: {{ vote_total }}
+                        </div>
+                    </div>
+                    <div>
+                        {{ livewire:vote-button :key="id" :nomination="current" }}
+                    </div>
                 </div>
-                <div class="text-right">
-                    <span class="font-semibold">{{ vote_total }}</span>
-                    <span class="text-gray-500 text-sm">votes</span>
-                </div>
-            </div>
-        {{ /nominations }}
-    </div>
+            {{ /nominations }}
+        </div>
+    {{ else }}
+        <div class="text-sm text-gray-500 mb-4">
+            No nominations found
+        </div>
+    {{ /if }}
 </div>
+
+{{ livewire:scripts }}

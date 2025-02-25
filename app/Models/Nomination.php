@@ -31,9 +31,4 @@ class Nomination extends Model
     {
         return $this->belongsTo(Place::class);
     }
-
-    public function votes(): HasMany
-    {
-        return $this->hasMany(Vote::class, ['ranking_id', 'place_id'], ['ranking_id', 'place_id']);
-    }
 }

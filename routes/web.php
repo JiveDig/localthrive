@@ -1,14 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
 
-// Route::statamic('example', 'example-view', [
-//    'title' => 'Example'
-// ]);
+Route::view('/', 'welcome');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Test route for vote button
+Route::get('/test-vote', function () {
+    $testNomination = [
+        'ranking_id' => 1, // We'll need to replace this with a real UUID from your rankings table
+        'place' => ['id' => 1], // We'll need to replace this with a real UUID from your places table
+        'vote_total' => 0
+    ];
+    return view('test-vote', ['nomination' => $testNomination]);
+})->name('test-vote');
+
+Route::view('dashboard', 'dashboard')
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+Route::view('profile', 'profile')
+    ->middleware(['auth'])
+    ->name('profile');
+
+require __DIR__.'/auth.php';

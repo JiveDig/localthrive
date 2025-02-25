@@ -15,6 +15,7 @@
         {{ partial:statamic-peak-browser-appearance::snippets/browser_appearance }}
         {{ partial:statamic-peak-tools::snippets/live_preview }}
         {{ stack:head }}
+        {{ livewire:styles }}
     </head>
     <body class="bg-gray-100">
         {{ stack:seo_body }}
@@ -27,6 +28,8 @@
         </div>
 
         {{ partial:layout/footer }}
+        {{ livewire:scripts }}
+        <script src="//unpkg.com/alpinejs" defer></script>
     </body>
 </html>
 <!-- End: /layout.antlers.html -->
