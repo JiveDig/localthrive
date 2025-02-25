@@ -1,0 +1,28 @@
+<h1 class="text-3xl font-bold mb-6">{{ title }}</h1>
+
+{{ if content }}
+    <div class="prose mb-8">
+        {{ content }}
+    </div>
+{{ /if }}
+
+<div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-xl font-semibold mb-4">Nominated Places</h2>
+
+    <div class="space-y-4">
+        {{ nominations }}
+            <div class="flex items-center justify-between border-b pb-4">
+                <div>
+                    <h3 class="font-medium">{{ place_data:title }}</h3>
+                    {{ if place_data:content }}
+                        <p class="text-gray-600 text-sm">{{ place_data:content }}</p>
+                    {{ /if }}
+                </div>
+                <div class="text-right">
+                    <span class="font-semibold">{{ vote_total }}</span>
+                    <span class="text-gray-500 text-sm">votes</span>
+                </div>
+            </div>
+        {{ /nominations }}
+    </div>
+</div>

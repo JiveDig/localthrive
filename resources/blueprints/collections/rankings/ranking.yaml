@@ -1,0 +1,26 @@
+title: Ranking
+sections:
+  main:
+    display: Main
+    fields:
+      -
+        handle: title
+        field:
+          type: text
+          required: true
+      -
+        handle: content
+        field:
+          type: textarea
+      -
+        handle: nominations_count
+        field:
+          type: text
+          display: "Number of Nominations"
+          read_only: true
+      -
+        handle: nominations_list
+        field:
+          type: textarea
+          display: "Nominations"
+          read_only: true
