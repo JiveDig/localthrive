@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Statamic\Policies\UserPolicy;
 use App\Policies\CustomUserPolicy;
 use Studio1902\PeakSeo\Handlers\ErrorPage;
+use Livewire\Livewire;
+use App\Livewire\VoteButton;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,5 +34,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         ErrorPage::handle404AsEntry();
+
+        // Register Livewire Components
+        Livewire::component('vote-button', VoteButton::class);
     }
 }

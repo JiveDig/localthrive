@@ -1,24 +1,5 @@
 {{ livewire:styles }}
 
-<!-- Debug output -->
-<div class="bg-gray-100 p-4 mb-4 font-mono text-sm overflow-auto">
-    <h3 class="font-bold mb-2">Debug Info:</h3>
-    <div class="mb-2">
-        <strong>Entry ID:</strong> {{ id }}<br>
-        <strong>Collection:</strong> {{ collection }}<br>
-        <strong>Title:</strong> {{ title }}
-    </div>
-    <div class="mb-2">
-        <strong>Computed Values:</strong><br>
-        nominations: {{ nominations | length ?? 'not set' }}<br>
-        total_votes: {{ total_votes ?? 'not set' }}
-    </div>
-    <div>
-        <strong>Raw Data:</strong><br>
-        {{ dump }}
-    </div>
-</div>
-
 <h1 class="text-3xl font-bold mb-6">{{ title }}</h1>
 
 {{ if content }}
@@ -47,13 +28,17 @@
                         {{ if place_data:content }}
                             <p class="text-gray-600 text-sm">{{ place_data:content }}</p>
                         {{ /if }}
-                        <!-- Debug info -->
                         <div class="text-xs text-gray-400">
-                            ID: {{ id }} | Ranking: {{ ranking_id }} | Votes: {{ vote_total }}
+                            Votes: {{ vote_total }}
                         </div>
                     </div>
                     <div>
-                        {{ livewire:vote-button :key="id" :nomination="current" }}
+                        {{ partial src="vote-button"
+                            :nomination_id="id"
+                            :nomination_ranking_id="ranking_id"
+                            :nomination_place_data="place_data"
+                            :nomination_vote_total="vote_total"
+                        }}
                     </div>
                 </div>
             {{ /nominations }}

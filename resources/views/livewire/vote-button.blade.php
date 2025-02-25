@@ -4,7 +4,10 @@
             <button
                 wire:click="upvote"
                 class="flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
-                :class="{ 'bg-blue-500 text-white': @entangle('hasUpvoted'), 'bg-gray-200 hover:bg-gray-300 text-gray-700': !@entangle('hasUpvoted') }"
+                :class="{
+                    'bg-blue-500 text-white': $wire.hasUpvoted,
+                    'bg-gray-200 hover:bg-gray-300 text-gray-700': !$wire.hasUpvoted
+                }"
                 x-data
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -16,7 +19,10 @@
             <button
                 wire:click="downvote"
                 class="flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
-                :class="{ 'bg-red-500 text-white': @entangle('hasDownvoted'), 'bg-gray-200 hover:bg-gray-300 text-gray-700': !@entangle('hasDownvoted') }"
+                :class="{
+                    'bg-red-500 text-white': $wire.hasDownvoted,
+                    'bg-gray-200 hover:bg-gray-300 text-gray-700': !$wire.hasDownvoted
+                }"
                 x-data
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -28,7 +34,7 @@
         </div>
 
         <div class="text-right">
-            <span class="font-semibold">{{ $voteTotal }}</span>
+            <span class="font-semibold" wire:model="voteTotal">{{ $voteTotal }}</span>
             <span class="text-gray-500 text-sm">votes</span>
         </div>
     </div>

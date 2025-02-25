@@ -5,31 +5,44 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Vote;
 use Illuminate\Support\Facades\Auth;
-use Statamic\Facades\Entry;
+use Illuminate\Support\Facades\Log;
 
 class VoteButton extends Component
 {
     public $nomination;
     public $voteTotal;
-    public $hasUpvoted;
-    public $hasDownvoted;
+    public $hasUpvoted = false;
+    public $hasDownvoted = false;
     public $rankingId;
     public $placeId;
 
     public function mount($nomination)
     {
+        Log::info('Mounting VoteButton', ['nomination' => $nomination]);
+
         $this->nomination = $nomination;
-        $this->rankingId = $nomination->get('ranking_id');
-        $this->placeId = $nomination->get('place_data')->id();
+        $this->rankingId = $nomination['ranking_id'];
+        $this->placeId = $nomination['place_data']['id'];
+        $this->voteTotal = $nomination['vote_total'] ?? 0;
         $this->refreshVoteStatus();
     }
 
     protected function refreshVoteStatus()
     {
-        $this->voteTotal = $this->nomination->get('vote_total') ?? 0;
-        $userVote = $this->nomination->get('user_vote');
-        $this->hasUpvoted = $userVote === 1;
-        $this->hasDownvoted = $userVote === -1;
+        if (!Auth::check()) {
+            $this->hasUpvoted = false;
+            $this->hasDownvoted = false;
+            return;
+        }
+
+        $vote = Vote::where([
+            'user_id' => Auth::id(),
+            'ranking_id' => $this->rankingId,
+            'place_id' => $this->placeId
+        ])->first();
+
+        $this->hasUpvoted = $vote && $vote->value === 1;
+        $this->hasDownvoted = $vote && $vote->value === -1;
     }
 
     public function upvote()
@@ -69,6 +82,11 @@ class VoteButton extends Component
             'ranking_id' => $this->rankingId,
             'place_id' => $this->placeId
         ])->delete();
+
+        $this->voteTotal = Vote::where([
+            'ranking_id' => $this->rankingId,
+            'place_id' => $this->placeId
+        ])->sum('value');
     }
 
     protected function castVote($value)
@@ -81,6 +99,11 @@ class VoteButton extends Component
             ],
             ['value' => $value]
         );
+
+        $this->voteTotal = Vote::where([
+            'ranking_id' => $this->rankingId,
+            'place_id' => $this->placeId
+        ])->sum('value');
     }
 
     public function render()
